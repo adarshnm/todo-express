@@ -2,7 +2,7 @@ const express = require("express");
 const { model } = require("mongoose");
 var taskRoute = express.Router();
 var Task = require("../models/task.model");
-
+const taskTypes = require("../utils/taskTypes");
 const passport = require("passport");
 
 // Middleware
@@ -38,6 +38,30 @@ taskRoute.get("/allTasks", isLoggedIn, (req, res, next) => {
     (err, docs) => {
       if (err) return next(err);
       else return res.status(200).json({ statusCode: 200, message: docs });
+    }
+  );
+});
+taskRoute.get("/allTasksCount", isLoggedIn, (req, res, next) => {
+  user = req.user;
+  Task.find(
+    { user: user.username },
+    null,
+    { sort: "-updatedAt" },
+    (err, tasks) => {
+      if (err) return next(err);
+      else {
+        var count = {};
+        for (var type of taskTypes) {
+
+          count[type] = 0;
+        }
+    
+        tasks.forEach((task) => {
+          count[task.type]++;
+        });
+
+        return res.status(200).json({ statusCode: 200, message: count });
+      }
     }
   );
 });

@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
-const taskType = ["Todo", "In Progress", "Completed"];
+const taskTypes = require("../utils/taskTypes");
 
 var taskSchema = new mongoose.Schema(
   {
     user: String,
     title: String,
     description: String,
-    type: { type: String, enum: taskType },
+    type: { type: String, enum: taskTypes },
   },
   { timestamps: true }
 );
