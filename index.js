@@ -42,7 +42,7 @@ const userRoute = require("./routes/user.route");
 app.use("/api", taskRoute);
 app.use("/auth", userRoute);
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome to Todo App." });
 });
 
 // PORT
@@ -51,11 +51,7 @@ const port = process.env.PORT || 8000;
 app.listen(port, () => {
   console.log("Listening on port " + port);
 });
-// app.use((req, res, next) => {
-//   next(createError(404));
-// });
 
-// error handler
 app.use(function (err, req, res, next) {
   console.error(err.message);
   if (!err.statusCode) err.statusCode = 500;
