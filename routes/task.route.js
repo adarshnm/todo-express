@@ -36,8 +36,17 @@ taskRoute.get("/allTasks", isLoggedIn, (req, res, next) => {
     null,
     { sort: "-updatedAt" },
     (err, docs) => {
+
+      var tasks = {};
+      taskTypes.forEach((task)=> {
+        tasks[task] = []
+      })
+      docs.forEach((task)=> {
+        tasks[task.type].push(task);
+      });
+
       if (err) return next(err);
-      else return res.status(200).json({ statusCode: 200, message: docs });
+      else return res.status(200).json({ statusCode: 200, message: tasks });
     }
   );
 });
@@ -52,10 +61,9 @@ taskRoute.get("/allTasksCount", isLoggedIn, (req, res, next) => {
       else {
         var count = {};
         for (var type of taskTypes) {
-
           count[type] = 0;
         }
-    
+
         tasks.forEach((task) => {
           count[task.type]++;
         });
